@@ -1,0 +1,129 @@
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvTemplate {
+  [key: string]: string | undefined;
+}
+
+interface HeaderRule {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CacheStrategy {
+  [urlPattern: string]: { regex: boolean; ttl: number };
+}
+
+interface FrameworkSettings {
+  vercel?: Record<string, any>;
+  netlify?: Record<string, any>;
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvTemplate;
+  headers: Array<HeaderRule>;
+  cacheStrategies: CacheStrategy;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PRIVATE_SECRET_KEY: process.env.NEXT_PRIVATE_SECRET_KEY
+  },
+  headers: [
+    {
+      source: "/api/:path*",
+      headers: [
+        { key: "Access-Control-Allow-Credentials", value: "true" },
+        { key: "Access-Control-Allow-Origin", value: "*" }
+      ]
+    }
+  ],
+  cacheStrategies: {
+    "/_next/static/:path*(.js|.css|.json|.woff2)": { regex: true, ttl: 0 },
+    "/api/*": { regex: false, ttl: 60 }
+  },
+  frameworkSettings: {
+    vercel: {
+      buildCommand: "yarn run build",
+      startCommand: "yarn run start"
+    },
+    netlify: {
+      publish: ".next",
+      functions: "functions"
+    }
+  }
+};
+
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvTemplate {
+  [key: string]: string | undefined;
+}
+
+interface HeaderRule {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CacheStrategy {
+  [urlPattern: string]: { regex: boolean; ttl: number };
+}
+
+interface FrameworkSettings {
+  vercel?: Record<string, any>;
+  netlify?: Record<string, any>;
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvTemplate;
+  headers: Array<HeaderRule>;
+  cacheStrategies: CacheStrategy;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PRIVATE_SECRET_KEY: process.env.NEXT_PRIVATE_SECRET_KEY
+  },
+  headers: [
+    {
+      source: "/api/:path*",
+      headers: [
+        { key: "Access-Control-Allow-Credentials", value: "true" },
+        { key: "Access-Control-Allow-Origin", value: "*" }
+      ]
+    }
+  ],
+  cacheStrategies: {
+    "/_next/static/:path*(.js|.css|.json|.woff2)": { regex: true, ttl: 0 },
+    "/api/*": { regex: false, ttl: 60 }
+  },
+  frameworkSettings: {
+    vercel: {
+      buildCommand: "yarn run build",
+      startCommand: "yarn run start"
+    },
+    netlify: {
+      publish: ".next",
+      functions: "functions"
+    }
+  }
+};
